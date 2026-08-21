@@ -1,0 +1,38 @@
+PyTorch
+Copyright PyTorch contributors
+BSD 3-Clause license
+https://github.com/pytorch/pytorch
+
+NumPy
+Copyright NumPy developers
+BSD 3-Clause license
+https://numpy.org
+
+Pillow
+Copyright Pillow contributors
+HPND license
+https://python-pillow.org
+
+PyYAML
+Copyright Kirill Simonov
+MIT license
+https://pyyaml.org
+
+EyePACS diabetic retinopathy competition data
+Provided by EyePACS through Kaggle under the competition access terms
+https://www.kaggle.com/c/diabetic-retinopathy-detection/data
+
+Messidor-2
+Provided by the Messidor program partners and LaTIM
+Research and educational use only; copying, redistribution, and unauthorized commercial use are prohibited
+https://www.adcis.net/en/third-party/messidor2/
+
+OCTDL version 2
+Copyright the OCTDL dataset creators
+The Zenodo record does not state a machine-readable license
+https://zenodo.org/records/10839556
+
+Large Dataset of Labeled Optical Coherence Tomography and Chest X-Ray Images version 3
+Copyright Daniel Kermany, Kang Zhang, and Michael Goldbaum
+Research use only according to the Mendeley Data record
+https://data.mendeley.com/datasets/rscbjbr9sj/3

@@ -1,0 +1,61 @@
+project_title: "HalluciGuard-Eye: Knowledge Graph-Enhanced Retrieval-Augmented Generation for Hallucination Detection and Mitigation in Ophthalmic Multimodal Large Language Models"
+seed: 42
+model:
+  language_model: vicuna-13b-v1.5
+  vision_encoder: vit-large-patch14-336
+  image_size: 336
+  patch_size: 14
+  vision_width: 1024
+  language_width: 5120
+  knowledge_width: 256
+  alignment_width: 64
+  evidence_width: 5120
+  vision_layers: 24
+  decoder_layers: 40
+  attention_heads: 16
+  max_text_tokens: 128
+knowledge:
+  entity_count: 47832
+  relation_count: 23
+  triplet_count: 156294
+  embedding_dimension: 256
+  margin: 1.0
+  negative_sampling_ratio: 256
+  embedding_epochs: 1000
+  embedding_learning_rate: 0.0001
+  retrieval_threshold: 0.75
+  expansion_threshold: 0.6
+  reasoning_hops: 2
+generation:
+  candidates: 5
+  alignment_weight: 0.3
+  grounding_weight: 0.4
+  diversity_weight: 0.0
+loss:
+  contrastive_temperature: 0.07
+  pretrain_itm_weight: 0.5
+  pretrain_kge_weight: 0.3
+  instruct_alignment_weight: 0.4
+  instruct_grounding_weight: 0.3
+  instruct_hfs_weight: 0.3
+  rlcf_kl_weight: 0.1
+hfs:
+  anatomical_weight: 0.25
+  pathological_weight: 0.4
+  recommendation_weight: 0.35
+  recommendation_max_path: 3
+training:
+  optimizer: adamw
+  learning_rate: 0.00002
+  batch_size: 128
+  stage_epochs: [10, 5, 3]
+  world_size: 8
+  mixed_precision: true
+  gpu: nvidia-a100-80gb
+  gpu_count: 8
+  reported_hours: 108
+  scheduler: engineering_default_cosine
+  warmup_steps: engineering_default_0
+  weight_decay: engineering_default_0.01
+  gradient_clipping: engineering_default_1.0
+  precision: engineering_default_bfloat16

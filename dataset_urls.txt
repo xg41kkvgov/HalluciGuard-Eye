@@ -1,0 +1,4 @@
+https://www.kaggle.com/c/diabetic-retinopathy-detection/data
+https://www.adcis.net/en/third-party/messidor2/
+https://zenodo.org/records/10839556
+https://data.mendeley.com/datasets/rscbjbr9sj/3

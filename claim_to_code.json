@@ -1,0 +1,304 @@
+{
+  "project": {
+    "formal_title": "HalluciGuard-Eye: Knowledge Graph-Enhanced Retrieval-Augmented Generation for Hallucination Detection and Mitigation in Ophthalmic Multimodal Large Language Models",
+    "package": "halluciguard_eye",
+    "domain": "ophthalmic multimodal generation, hallucination detection, and clinical evidence grounding",
+    "framework": {
+      "value": "PyTorch 2.7.1",
+      "confidence": "HIGH",
+      "basis": "The implementation details identify LLaVA-1.5, ViT-L/14, Vicuna-13B, AdamW, and mixed-precision training."
+    },
+    "venue": {
+      "value": "IEEE Access manuscript template",
+      "confidence": "MEDIUM",
+      "basis": "The PDF uses IEEE Access branding and layout, but its DOI, publication date, authors, and current-version fields are unresolved template text."
+    },
+    "supplementary_material": "none found",
+    "verification_state": "PARTIALLY_VERIFIED"
+  },
+  "paper_constants": {
+    "entities": 47832,
+    "relation_types": 23,
+    "triplets": 156294,
+    "knowledge_embedding_dimension": 256,
+    "knowledge_margin": 1.0,
+    "knowledge_epochs": 1000,
+    "knowledge_learning_rate": 0.0001,
+    "negative_sampling_ratio": 256,
+    "cross_attention_dimension": 64,
+    "contrastive_temperature": 0.07,
+    "retrieval_threshold": 0.75,
+    "expansion_threshold": 0.6,
+    "reasoning_hops": 2,
+    "reranking_alignment_weight": 0.3,
+    "reranking_grounding_weight": 0.4,
+    "candidate_count": 5,
+    "hfs_weights": [0.25, 0.4, 0.35],
+    "recommendation_max_path": 3,
+    "pretraining_weights": [0.5, 0.3],
+    "instruction_weights": [0.4, 0.3, 0.3],
+    "rlcf_kl_weight": 0.1,
+    "rlcf_pairs": 2000,
+    "optimizer": "AdamW",
+    "learning_rate": 0.00002,
+    "batch_size": 128,
+    "stage_epochs": [10, 5, 3],
+    "hardware": "8 NVIDIA A100 80GB GPUs",
+    "reported_training_hours": 108,
+    "seed": 42,
+    "reported_runs": 3
+  },
+  "engineering_defaults_not_reported_by_paper": {
+    "scheduler": "cosine",
+    "warmup_steps": 0,
+    "weight_decay": 0.01,
+    "gradient_clipping": 1.0,
+    "mixed_precision_dtype": "bfloat16",
+    "gradient_accumulation": 1,
+    "sequence_length": 128
+  },
+  "equations": [
+    {
+      "equation": 1,
+      "claim": "Candidate responses maximize weighted factuality minus a diversity penalty.",
+      "code": ["code/halluciguard_eye/models/reranking.py:composite_scores"],
+      "status": "PARTIAL",
+      "note": "Factuality reranking is implemented; the paper does not report a numerical diversity coefficient."
+    },
+    {
+      "equation": 2,
+      "claim": "TransE uses margin ranking with L2 distance and corrupted head or tail entities.",
+      "code": ["code/halluciguard_eye/knowledge/transe.py:TransE", "code/halluciguard_eye/knowledge/transe.py:corrupt_triplets"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 3,
+      "claim": "ViT-L/14 produces visual tokens.",
+      "code": ["code/halluciguard_eye/models/vision.py:VisionTransformer"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 4,
+      "claim": "The text encoder produces response-segment tokens.",
+      "code": ["code/halluciguard_eye/models/decoder.py:ClinicalLanguageDecoder", "code/halluciguard_eye/data/tokenization.py:segment_claims"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 5,
+      "claim": "Visual-to-text scaled dot-product attention.",
+      "code": ["code/halluciguard_eye/models/vsam.py:DirectedCrossAttention"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 6,
+      "claim": "Text-to-visual scaled dot-product attention.",
+      "code": ["code/halluciguard_eye/models/vsam.py:DirectedCrossAttention"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 7,
+      "claim": "Matched image-text pairs use contrastive softmax loss with temperature 0.07.",
+      "code": ["code/halluciguard_eye/losses/contrastive.py:image_text_contrastive_loss"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 8,
+      "claim": "Alignment score uses pooled directed contexts, their product, an MLP, and a sigmoid.",
+      "code": ["code/halluciguard_eye/models/vsam.py:VisualSemanticAlignmentModule"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 9,
+      "claim": "The CFGN query is the mean embedding of response entities.",
+      "code": ["code/halluciguard_eye/models/grounding.py:ClinicalFactualityGroundingNetwork.entity_query"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 10,
+      "claim": "Initial triplet retrieval accepts a head or tail cosine score above 0.75.",
+      "code": ["code/halluciguard_eye/knowledge/retrieval.py:KnowledgeRetriever.initial_scores"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 11,
+      "claim": "Subgraph expansion uses two hops and relation score threshold 0.6.",
+      "code": ["code/halluciguard_eye/knowledge/retrieval.py:KnowledgeRetriever.expand"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 12,
+      "claim": "Grounding is the mean over claims of maximum evidence similarity.",
+      "code": ["code/halluciguard_eye/knowledge/retrieval.py:KnowledgeRetriever.claim_grounding_score", "code/halluciguard_eye/models/grounding.py:ClinicalFactualityGroundingNetwork.evidence_similarity"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 13,
+      "claim": "Candidate score combines log probability, alignment, and grounding with weights 0.3 and 0.4.",
+      "code": ["code/halluciguard_eye/models/reranking.py:composite_scores"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 14,
+      "claim": "The maximum-scoring candidate is selected.",
+      "code": ["code/halluciguard_eye/models/reranking.py:rerank_candidates"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 15,
+      "claim": "Linearized knowledge evidence is encoded by a lightweight transformer.",
+      "code": ["code/halluciguard_eye/models/layers.py:EvidenceEncoder"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 16,
+      "claim": "Visual-to-text attention is mean pooled before fusion.",
+      "code": ["code/halluciguard_eye/models/full_model.py:HalluciGuardEye.forward"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 17,
+      "claim": "The fusion gate is a sigmoid over hidden, alignment, and evidence features.",
+      "code": ["code/halluciguard_eye/models/layers.py:GatedEvidenceFusion"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 18,
+      "claim": "The fused hidden state interpolates between decoder hidden state and fused context.",
+      "code": ["code/halluciguard_eye/models/layers.py:GatedEvidenceFusion"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 19,
+      "claim": "Anatomical accuracy is the mean of anatomical verification indicators.",
+      "code": ["code/halluciguard_eye/metrics/factuality.py:anatomical_accuracy", "code/halluciguard_eye/metrics/factuality.py:verify_anatomical_references"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 20,
+      "claim": "Pathological characterization is a severity-weighted pathology similarity.",
+      "code": ["code/halluciguard_eye/metrics/factuality.py:pathological_characterization"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 21,
+      "claim": "Recommendation validity is knowledge-graph support with path length at most three.",
+      "code": ["code/halluciguard_eye/metrics/factuality.py:clinical_recommendation_validity"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 22,
+      "claim": "HFS is 0.25 AA plus 0.40 PC plus 0.35 CRV.",
+      "code": ["code/halluciguard_eye/metrics/factuality.py:hierarchical_factuality_score", "code/halluciguard_eye/losses/hfs.py:hierarchical_factuality_score"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 23,
+      "claim": "Stage 1 loss combines MLM, ITM, and KGE with weights 0.5 and 0.3.",
+      "code": ["code/halluciguard_eye/losses/stages.py:pretraining_loss"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 24,
+      "claim": "Stage 2 combines generation, alignment, grounding, and HFS losses with weights 0.4, 0.3, and 0.3.",
+      "code": ["code/halluciguard_eye/losses/stages.py:instruction_loss"],
+      "status": "MAPPED"
+    },
+    {
+      "equation": 25,
+      "claim": "Stage 3 uses clinical reward and KL regularization with coefficient 0.1.",
+      "code": ["code/halluciguard_eye/losses/stages.py:rlcf_loss", "code/halluciguard_eye/losses/stages.py:clinical_reward"],
+      "status": "MAPPED"
+    }
+  ],
+  "tables_and_figures": [
+    {
+      "item": "Figure 1",
+      "code": ["code/halluciguard_eye/models/full_model.py", "code/halluciguard_eye/knowledge/retrieval.py"],
+      "status": "MAPPED"
+    },
+    {
+      "item": "Figure 2",
+      "code": ["code/halluciguard_eye/models/vision.py", "code/halluciguard_eye/models/vsam.py", "code/halluciguard_eye/models/grounding.py", "code/halluciguard_eye/models/decoder.py"],
+      "status": "MAPPED"
+    },
+    {
+      "item": "Table 1",
+      "code": ["code/halluciguard_eye/knowledge/graph.py:ClinicalKnowledgeGraph.statistics"],
+      "status": "MAPPED"
+    },
+    {
+      "item": "Table 2",
+      "code": ["code/halluciguard_eye/evaluation/protocol.py:EvaluationProtocol.paper_protocol"],
+      "status": "MAPPED_WITH_SOURCE_MISMATCH"
+    },
+    {
+      "item": "Table 3",
+      "code": ["code/halluciguard_eye/metrics/hallucination.py", "code/halluciguard_eye/metrics/factuality.py"],
+      "status": "METRICS_MAPPED_RESULTS_NOT_RECREATED"
+    },
+    {
+      "item": "Table 4",
+      "code": ["code/halluciguard_eye/metrics/diagnostic.py"],
+      "status": "METRICS_MAPPED_RESULTS_NOT_RECREATED"
+    },
+    {
+      "item": "Table 5",
+      "code": ["code/halluciguard_eye/metrics/factuality.py"],
+      "status": "METRICS_MAPPED_RESULTS_NOT_RECREATED"
+    },
+    {
+      "item": "Table 6",
+      "code": ["code/configs/main.yaml"],
+      "status": "ABLATION_TARGETS_RECORDED_RESULTS_NOT_RECREATED"
+    },
+    {
+      "item": "Table 7",
+      "code": ["code/halluciguard_eye/evaluation/expert.py"],
+      "status": "METRICS_MAPPED_RESULTS_NOT_RECREATED"
+    }
+  ],
+  "data": [
+    {
+      "name": "EyePACS Diabetic Retinopathy Detection",
+      "paper_split": [28101, 3513, 3512],
+      "url": "https://www.kaggle.com/c/diabetic-retinopathy-detection/data",
+      "access": "competition terms and account access",
+      "source_check": "PASS"
+    },
+    {
+      "name": "Messidor-2",
+      "paper_split": [0, 0, 1748],
+      "url": "https://www.adcis.net/en/third-party/messidor2/",
+      "access": "request form; research and education; redistribution prohibited",
+      "source_check": "PASS_WITH_MISMATCH",
+      "mismatch": "The official source says the release has no diabetic-retinopathy ground truth; the paper says images were specialist-labeled for DR and DME."
+    },
+    {
+      "name": "OCTDL version 2",
+      "paper_split": [1445, 309, 310],
+      "url": "https://zenodo.org/records/10839556",
+      "access": "open download",
+      "source_check": "PASS_WITH_MISMATCH",
+      "mismatch": "The paper states six classes while the official record contains seven categories, including Normal."
+    },
+    {
+      "name": "Kermany OCT version 3",
+      "paper_split": [75136, 8348, 1000],
+      "url": "https://data.mendeley.com/datasets/rscbjbr9sj/3",
+      "access": "research use",
+      "source_check": "PASS_WITH_MISMATCH",
+      "mismatch": "The official version 3 record states patient-independent train and test sets; the paper applies its own 10 percent validation allocation and reports counts totaling 84484 rather than its stated 84495."
+    }
+  ],
+  "unresolved_paper_details": [
+    "The base LLaVA-1.5 checkpoint revision is not identified.",
+    "The ophthalmic ViT-L/14 fine-tuning corpus and checkpoint are not released or identified.",
+    "The medical text encoder is not named.",
+    "The anatomical detection network architecture and annotations are not supplied.",
+    "The OCKG entity, relation, source, and evidence files are not supplied.",
+    "The 2000 ophthalmologist response pairs and reward coding are not supplied.",
+    "Scheduler, warmup, weight decay, gradient clipping, precision dtype, sequence length, and gradient accumulation are not reported.",
+    "The single-center retrospective cohort, site, dates, camera distribution, and outcomes are not supplied.",
+    "No author list, final DOI, publication date, or code-availability statement is present."
+  ]
+}

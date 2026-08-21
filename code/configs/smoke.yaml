@@ -1,0 +1,54 @@
+project_title: "HalluciGuard-Eye: Knowledge Graph-Enhanced Retrieval-Augmented Generation for Hallucination Detection and Mitigation in Ophthalmic Multimodal Large Language Models"
+seed: 42
+model:
+  image_size: 28
+  patch_size: 7
+  vision_width: 32
+  language_width: 48
+  knowledge_width: 16
+  alignment_width: 8
+  evidence_width: 48
+  vision_layers: 2
+  decoder_layers: 2
+  attention_heads: 4
+  max_text_tokens: 12
+knowledge:
+  entity_count: 24
+  relation_count: 6
+  triplet_count: 32
+  embedding_dimension: 16
+  margin: 1.0
+  negative_sampling_ratio: 2
+  embedding_epochs: 2
+  embedding_learning_rate: 0.001
+  retrieval_threshold: 0.2
+  expansion_threshold: 0.1
+  reasoning_hops: 2
+generation:
+  candidates: 3
+  alignment_weight: 0.3
+  grounding_weight: 0.4
+loss:
+  contrastive_temperature: 0.07
+  pretrain_itm_weight: 0.5
+  pretrain_kge_weight: 0.3
+  instruct_alignment_weight: 0.4
+  instruct_grounding_weight: 0.3
+  instruct_hfs_weight: 0.3
+  rlcf_kl_weight: 0.1
+hfs:
+  anatomical_weight: 0.25
+  pathological_weight: 0.4
+  recommendation_weight: 0.35
+  recommendation_max_path: 3
+training:
+  learning_rate: 0.002
+  batch_size: 2
+  stage_epochs: [1, 1, 1]
+  world_size: 1
+  mixed_precision: false
+  scheduler: constant
+  warmup_steps: 0
+  weight_decay: 0.0
+  gradient_clipping: 1.0
+  precision: float32

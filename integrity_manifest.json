@@ -1,0 +1,64 @@
+{
+  "project": "HalluciGuard-Eye: Knowledge Graph-Enhanced Retrieval-Augmented Generation for Hallucination Detection and Mitigation in Ophthalmic Multimodal Large Language Models",
+  "status": "PARTIALLY_VERIFIED",
+  "manifest_version": 1,
+  "hash_algorithm": "SHA-256",
+  "self_excluded": true,
+  "operating_system_metadata_excluded": true,
+  "file_count_excluding_manifest": 56,
+  "aggregate": {
+    "value": "1a951d06e2f795e6eb34d744b0cd1a21b930b89a89da83b8a68ff4fc83d57788",
+    "construction": "SHA-256 of the sorted stream of per-file SHA-256 records using project-relative paths, excluding integrity_manifest.json and operating-system metadata files"
+  },
+  "critical_files": {
+    "claim_to_code.json": "3a32e09b16d12d39db2a68388b541c8520dba5686169710e942759c49b322e02",
+    "verification_report.json": "e5a4b333e15f24b92398696cbe40d1695ea38967a78118b53b6bf95ba5585eaa",
+    "dataset_urls.txt": "584f8fe0837e76015b3a1b997e35558fd0ee8e58738a0415fab32b2681d80e1a",
+    "code/configs/main.yaml": "f9c8582e2cb705b2e4c18c7ffb296c7394389a440a94f52816b7dfcfda0b0b60",
+    "code/configs/smoke.yaml": "97cb2bbcf7d2ad09ad9330133f1de11dbf1861cd65c0f11b5fd05e691d77c9ae",
+    "code/halluciguard_eye/models/full_model.py": "99978aaf1b23d431c02e1940848e24378a52e37935e21f3fdcedfe61ab938516",
+    "code/halluciguard_eye/knowledge/retrieval.py": "f4bb39929d94d397c3bb7063660c1baefcf0deaac858a0e262b9998fcae5583a",
+    "code/halluciguard_eye/losses/stages.py": "5f5720c0cf4962ef4e8d6a031d2de22617e05dc1bb9ca1589b89f044aba940cb",
+    "code/halluciguard_eye/metrics/factuality.py": "bbd6fad08a413e823a3c9740534869da9a04c06a1ff39d23dca8b628dc16b25c",
+    "code/halluciguard_eye/training/checkpoint.py": "3b8ba03b8f5874c6ce764c2b36d5ba55b5cecacc6f9e8bda62566e7034418c72"
+  },
+  "code_inventory": {
+    "python_files": 44,
+    "effective_python_lines": 4826,
+    "definition": "nonblank Python lines excluding lines whose first nonspace character is a comment marker",
+    "cross_file_duplicate_12_line_windows": 0,
+    "empty_or_pass_only_functions": 0,
+    "not_implemented_markers": 0,
+    "python_comment_lines": 0
+  },
+  "structure_audit": {
+    "source_root": "code/halluciguard_eye",
+    "tests_root": "code/tests",
+    "configuration_root": "code/configs",
+    "github_directory_present": false,
+    "workflow_directory_present": false,
+    "markdown_files_present": false,
+    "deployment_or_inference_artifacts_present": false,
+    "cache_files_present": false,
+    "system_metadata_files_present": false
+  },
+  "content_audit": {
+    "absolute_system_paths": 0,
+    "personal_information": 0,
+    "credentials_or_keys": 0,
+    "forbidden_authorship_markers": 0,
+    "hardcoded_generated_results": 0,
+    "verified_dataset_urls": 4,
+    "paper_equations_mapped": 25,
+    "paper_tables_mapped": 7,
+    "paper_figures_mapped": 2
+  },
+  "verification_summary": {
+    "pytest": "PASS: 53 tests",
+    "ruff": "PASS",
+    "syntax_compile": "PASS",
+    "strict_mypy": "FAIL: 60 errors",
+    "full_paper_scale_training": "BLOCKED",
+    "reported_results_recreated": "NOT_RUN"
+  }
+}

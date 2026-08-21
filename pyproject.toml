@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools==75.8.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "halluciguard-eye"
+version = "1.0.0"
+description = "HalluciGuard-Eye: Knowledge Graph-Enhanced Retrieval-Augmented Generation for Hallucination Detection and Mitigation in Ophthalmic Multimodal Large Language Models"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy==2.0.2",
+  "pillow==11.0.0",
+  "pyyaml==6.0.2",
+  "torch==2.7.1",
+  "torchvision==0.22.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy==1.15.0",
+  "pytest==9.0.2",
+  "ruff==0.9.10",
+]
+
+[tool.setuptools]
+package-dir = {"" = "code"}
+
+[tool.setuptools.packages.find]
+where = ["code"]
+
+[tool.pytest.ini_options]
+testpaths = ["code/tests"]
+pythonpath = ["code"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["halluciguard_eye"]
+mypy_path = "code"

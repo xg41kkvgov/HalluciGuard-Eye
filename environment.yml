@@ -1,0 +1,13 @@
+name: halluciguard-eye
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pytorch=2.7.1
+  - torchvision=0.22.1
+  - pytorch-cuda=12.6
+  - numpy=2.0.2
+  - pillow=11.0.0
+  - pyyaml=6.0.2

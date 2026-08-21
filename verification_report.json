@@ -1,0 +1,145 @@
+{
+  "project": "HalluciGuard-Eye: Knowledge Graph-Enhanced Retrieval-Augmented Generation for Hallucination Detection and Mitigation in Ophthalmic Multimodal Large Language Models",
+  "overall_status": "PARTIALLY_VERIFIED",
+  "execution_environment": {
+    "python": "3.12",
+    "torch": "2.7.1",
+    "device": "cpu",
+    "paper_hardware_available": false
+  },
+  "checks": [
+    {
+      "name": "paper_reading_and_layout_review",
+      "status": "PASS",
+      "evidence": "All 12 pages were text-extracted; all pages were rendered and reviewed as a contact sheet; 25 numbered equations, 7 tables, and 2 figures were inventoried."
+    },
+    {
+      "name": "supplementary_discovery",
+      "status": "PASS",
+      "evidence": "No sibling supplementary, supplement, SI, or appendix file was found and the paper names no supplementary filename."
+    },
+    {
+      "name": "claim_to_code_mapping",
+      "status": "PASS",
+      "evidence": "Equations 1 through 25, Figures 1 and 2, and Tables 1 through 7 are represented in claim_to_code.json. Equation 1 is explicitly partial because the diversity coefficient is not reported."
+    },
+    {
+      "name": "official_dataset_url_access",
+      "status": "PASS",
+      "evidence": "The four retained URLs returned HTTP 200 after redirects on 2026-08-21 and their page titles/content matched EyePACS, Messidor-2, OCTDL, and Kermany OCT."
+    },
+    {
+      "name": "dataset_source_consistency",
+      "status": "FAIL",
+      "evidence": "Official source metadata conflicts with the paper for Messidor-2 ground truth, OCTDL class count, and Kermany total/split counts. Details are preserved in claim_to_code.json."
+    },
+    {
+      "name": "real_image_reading",
+      "status": "PASS",
+      "evidence": "A PNG was created during pytest temporary-file execution, read through OphthalmicDataset, cropped, resized, normalized, and shape-checked."
+    },
+    {
+      "name": "model_forward",
+      "status": "PASS",
+      "evidence": "HalluciGuardEye executed with batch size 2 through vision tokens, decoder, bidirectional VSAM, CFGN, evidence encoder, gated fusion, logits, and three factuality heads."
+    },
+    {
+      "name": "loss_backward_parameter_update",
+      "status": "PASS",
+      "evidence": "A real cross-entropy loss was differentiated; gradients were finite and nonzero; AdamW changed parameters."
+    },
+    {
+      "name": "checkpoint_save_load",
+      "status": "PASS",
+      "evidence": "An atomic temporary-file plus replace save was executed; model and optimizer were restored; step, epoch, stage, seed, metadata, and random state were verified."
+    },
+    {
+      "name": "single_batch_overfit_regression",
+      "status": "PASS",
+      "evidence": "A four-example batch was trained for 40 updates; final loss fell below 20 percent of initial loss and all four labels were fit."
+    },
+    {
+      "name": "unit_integration_shape_regression_suite",
+      "status": "PASS",
+      "evidence": "python3 -m pytest -q code/tests completed with 53 passed in 2.38 seconds after the final code format."
+    },
+    {
+      "name": "ruff",
+      "status": "PASS",
+      "evidence": "python3 -m ruff check code returned All checks passed."
+    },
+    {
+      "name": "strict_mypy",
+      "status": "FAIL",
+      "evidence": "python3 -m mypy --strict code/halluciguard_eye reported 60 errors, dominated by unparameterized NumPy ndarray annotations, third-party return Any boundaries, and a missing PyYAML stub."
+    },
+    {
+      "name": "syntax_compile",
+      "status": "PASS",
+      "evidence": "python3 -m compileall -q code completed successfully."
+    },
+    {
+      "name": "effective_code_lines",
+      "status": "PASS",
+      "evidence": "The final Python scan counted 4,808 nonblank, non-comment lines before the final export-only additions."
+    },
+    {
+      "name": "empty_implementation_scan",
+      "status": "PASS",
+      "evidence": "AST inspection found zero empty or pass-only functions; source search found no NotImplementedError."
+    },
+    {
+      "name": "duplicate_code_scan",
+      "status": "PASS",
+      "evidence": "A normalized cross-file scan found zero duplicate 12-line windows."
+    },
+    {
+      "name": "code_comment_scan",
+      "status": "PASS",
+      "evidence": "No Python line beginning with a comment marker was found."
+    },
+    {
+      "name": "privacy_and_absolute_path_scan",
+      "status": "PASS",
+      "evidence": "No system absolute path, personal name, account credential, secret assignment, or API key was found in deliverable files. Scientific uses of token identifiers were reviewed as non-credential content."
+    },
+    {
+      "name": "forbidden_authorship_marker_scan",
+      "status": "PASS",
+      "evidence": "No forbidden reproduction, model-generation, assistant, unfinished, or promotional marker was found."
+    },
+    {
+      "name": "full_paper_scale_training",
+      "status": "BLOCKED",
+      "evidence": "The OCKG contents, ophthalmic ViT checkpoint, medical text encoder, image-text corpus, clinical feedback pairs, retrospective cohort, and 8 A100 80GB compute target are not available."
+    },
+    {
+      "name": "reported_table_recreation",
+      "status": "NOT_RUN",
+      "evidence": "No paper result, log, checkpoint, or metric value was fabricated."
+    },
+    {
+      "name": "container_build",
+      "status": "NOT_RUN",
+      "evidence": "Deployment artifacts were intentionally excluded by the user constraint."
+    }
+  ],
+  "test_history": [
+    {
+      "run": 1,
+      "status": "FAIL",
+      "result": "52 passed, 1 failed",
+      "cause": "The independent pathology-score test omitted the metric's explicit severity and empty-attribute similarity terms."
+    },
+    {
+      "run": 2,
+      "status": "PASS",
+      "result": "53 passed"
+    },
+    {
+      "run": 3,
+      "status": "PASS",
+      "result": "53 passed after static formatting and export updates"
+    }
+  ]
+}
